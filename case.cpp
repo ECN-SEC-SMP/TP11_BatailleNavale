@@ -1,11 +1,13 @@
-/*****************************************************************
-Auteurs : KORTAM Nirmine, SEYE Fatou DARGERE Lucas et LAVAUX Bastien
-projet : projet SMP 1er Année "Bataille Navale"
-Date : 22 mai 2024
-But : fichier source de la classe case
-Description : classe permettant de créer des cases de différentes types pour définir ceux qu'elles continnent
+/**
+ * @file bateau.h
+ * @authors KORTAM Nirmine, SEYE Fatou, 
+ *          DARGERE Lucas, LAVAUX Bastien
+ * @date 22 mai 2024
+ * @brief Création de la classe case.
+ * @details Mise en place d'une classe case qui permettra de donner des 
+ * coordonnées et son état.
+ */
 
-*****************************************************************/
 
 #include "case.h"
 #include <iostream>

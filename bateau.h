@@ -1,97 +1,41 @@
-/*****************************************************************
-Auteurs : KORTAM Nirmine, SEYE Fatou DARGERE Lucas et LAVAUX Bastien
-projet : projet SMP 1er Année "Bataille Navale"
-Date : 22 mai 2024
-But : fichier En-tete de la classe bateau
-Description : classe permettant de créer des bateau de différentes tailles et de gérés leurs vies
+/**
+ * @file bateau.h
+ * @authors KORTAM Nirmine, SEYE Fatou, 
+ *          DARGERE Lucas, LAVAUX Bastien
+ * @date 22 mai 2024
+ * @brief Déclaration de la classe bateau.
+ * @details Mise en place d'une classe Bateau qui permettra de donner un nom au
+ * bateau, une taille (5, 4, 3, 3, 2), leur état de vie et leur position dans le
+ * plateau de jeu.
+ */
 
-*****************************************************************/
+
 #pragma once
 
 #include "case.h"
 #include <iostream>
+#include <vector>
 using namespace std;
 
-class Bateau {
+class Bateau { // Création d'une classe bateau
 
 protected:
-
   string nom;
   int longueur;
   int vie;
-  
+  vector<int> position{};
 
 public:
   Bateau(int taille);
-  //Case position[longueur]
-  
-
-  //accesseurs en lecture
+  // accesseurs en lecture
   int getLong();
   string getnom();
   bool EStCoule() const;
+  int getPosition(int i);
+  int getvie();
 
-  //accesseurs en ecriture
+  // accesseurs en ecriture
   bool estCoule() const;
-
+  void writePosition(int coordonne);
+  void diminuerVie();
 };
-
-/*
-class porte_avion: public bateau {
-
-public:
-
-  porte_avion(Case c, string direction);
-  void setnom(string nom);
-  void setlong(int longueur);
-  void settbl(bool statut);
-
-};
-
-class croisiere: public bateau {
-  
-private:
-
-  croisiere(Case c, string direction);
-  Case tbl_pos[long];
-
-public:
-
-void setnom(string nom);
-void setlong(int longueur);
-void settbl(bool statut);
-  
-};
-
-
-class torpilleur: public bateau {
-
-
-private:
-
-  torpilleur(Case c, string direction);
-  Case tbl_pos(long);
-
-public:
-
-  void setnom(string nom);
-  void setlong(int longueur);
-  void settbl(bool statut);
-
-};
-
-
-class contre_torpilleur: public bateau {
-
-private:
-
-  contre_torpilleur(Case c, string direction);
-  Case tbl_pos(long);
-
-public:
-
-  void setnom(string nom);
-  void setlong(int longueur);
-  void settbl(bool statut);
-
-};*/
