@@ -25,11 +25,11 @@ using namespace std;
  *caractériser les différents états d'une case
  */
 #define EAU 0
-#define bateau 1
-#define fail 2
-#define touché att 3
-#define interdit 4
-#define touche def 5
+#define BATEAU 1
+#define FAIL 2
+#define TOUCHER_ATT 3
+#define INTERDIT 4
+#define TOUCHER_DEF 5
 
 /**
  *Le constructeur de la classe plateau mettant les attributs a leur valeur par
@@ -62,7 +62,7 @@ Plateau::Plateau() {
  *différencie si le joueur en face est une IA ou un ami et procède en
  *conséquence.
  */
-void Plateau::init(int type) { 
+void Plateau::init(int type) {
   if (type == 1) {
     placement(porte_avion);
     afficherPlateau();
@@ -73,6 +73,11 @@ void Plateau::init(int type) {
     placement(contre_torpilleur2);
     afficherPlateau();
     placement(torpilleur);
+    for (int i = 0; i < 100; ++i) {
+      if (tableau[0][i] == INTERDIT){
+        tableau[0][i] = EAU;
+      }
+    }
   } else if (type == 2) {
     placementIA(0);
   }
@@ -210,7 +215,6 @@ int Plateau::transfoChar(string &notation) {
     x = 9;
   }
   x = x + 10 * (stoi(notation.substr(1))) - 10;
-
   return x;
 }
 
@@ -218,11 +222,13 @@ int Plateau::transfoChar(string &notation) {
  *La fonction retourCoor récupère la coordonnée rentrée par l'utilisateur et la
  *transforme en une position du tableau.
  */
+
 int Plateau::retourCoor(string message) {
   string retour = Plateau::verifNotation(message);
   int coord = Plateau::transfoChar(retour);
   return coord;
 }
+
 
 /** @brief étude de la possibilité de placer des bateaux
  * @param typebateau : bateau à placer
@@ -270,7 +276,7 @@ bool Plateau::verifVerBas(Bateau *typebateau, int coordbateau) {
 
 bool Plateau::verifHorzDroite(Bateau *typebateau, int coordbateau) {
   for (int y = 1; y <= typebateau->getLong() - 1; ++y) {
-    if (round(coordbateau / 10) != round((coordbateau + y) / 10)) {
+    if ((coordbateau / 10) != (coordbateau + y) / 10) {
       return false;
     } else if (tableau[0][coordbateau + y] == 1) {
       return false;
@@ -454,11 +460,12 @@ void Plateau::placementHorzGauche(Bateau *typebateau, int coordbateau) {
   }
 }
 
-/** 
-* place les bateaux sur le plateau 
-* @param typebateau : bateau à placer
-* @detais : vérifie si le bateau peut être placé, si oui, place le bateau, sinon, redemande à l'utilisateur de rentrer des coordonnées
-*/
+/**
+ * place les bateaux sur le plateau
+ * @param typebateau : bateau à placer
+ * @detais : vérifie si le bateau peut être placé, si oui, place le bateau,
+ * sinon, redemande à l'utilisateur de rentrer des coordonnées
+ */
 void Plateau::placement(Bateau *typebateau) {
   int coordbateau =
       retourCoor("Entrez la position de votre " + typebateau->getnom() + " : ");
@@ -479,20 +486,21 @@ void Plateau::placement(Bateau *typebateau) {
 }
 
 /**
-* @brief modifie le statut de la case en fonction de l'état rentré en parametre
-* @param coord : coordonnées de la case à modifier, etat : état future de la case à modifier;
-*/
+ * @brief modifie le statut de la case en fonction de l'état rentré en parametre
+ * @param coord : coordonnées de la case à modifier, etat : état future de la
+ * case à modifier;
+ */
 void Plateau::modifCase(int position, int etat) { tableau[0][position] = etat; }
 
 /**
-* Enlève un point de vie au bateau
-*/
+ * Enlève un point de vie au bateau
+ */
 void Plateau::modifFlotteVie() { flottevie--; }
 
-/** 
-*vérifie si la flotte du joueur est vivante
-* @return : true si la flotte du joueur est vivante, false sinon
-*/
+/**
+ *vérifie si la flotte du joueur est vivante
+ * @return : true si la flotte du joueur est vivante, false sinon
+ */
 bool Plateau::flottevivante() {
   if (flottevie == 0) {
     return false;
@@ -500,10 +508,10 @@ bool Plateau::flottevivante() {
   return true;
 }
 
-/** 
-* @brief : vérifie si un bateau est touché en comparant la case viser et les positions des bateaux
-* param : coord : coordonnées de la case visée
-*/
+/**
+ * @brief : vérifie si un bateau est touché en comparant la case viser et les
+ * positions des bateaux param : coord : coordonnées de la case visée
+ */
 bool Plateau::bateautouche(int position) {
 
   for (int i = 0; i < porte_avion->getLong(); i++) {
@@ -549,10 +557,10 @@ bool Plateau::bateautouche(int position) {
   }
   return false;
 }
-/** 
-* Gestion du placement des bateaux
-* @param i  : choix du bateau dans le vecteur
-*/
+/**
+ * Gestion du placement des bateaux
+ * @param i  : choix du bateau dans le vecteur
+ */
 
 void Plateau::placementIA(int i) {
   std::random_device rd;
@@ -602,12 +610,12 @@ void Plateau::placementIA(int i) {
   }
 }
 
-/** 
-* Placement des bateaux sur le plateau
-* @param coordbateau  : coordonnée de la case où le bateau doit être placé
-* @param j  : choix de l'acces via un ramdon 
-* @param flottetour  : bateau qui doit etre placé
-*/
+/**
+ * Placement des bateaux sur le plateau
+ * @param coordbateau  : coordonnée de la case où le bateau doit être placé
+ * @param j  : choix de l'acces via un ramdon
+ * @param flottetour  : bateau qui doit etre placé
+ */
 
 void Plateau::PlacementCaseIA(int coordbateau, int j, int flottetour) {
   if (j == 0) {
@@ -628,10 +636,10 @@ void Plateau::PlacementCaseIA(int coordbateau, int j, int flottetour) {
   // this_thread::sleep_for(chrono::milliseconds(100));
 }
 
-/** 
-* Tire de l'IA grace a une fonction random
-* @param Plateau : plateau du joueur defensive
-*/
+/**
+ * Tire de l'IA grace a une fonction random
+ * @param Plateau : plateau du joueur defensive
+ */
 
 bool Plateau::tireIA(Plateau *def) {
   std::random_device rd;
@@ -647,10 +655,16 @@ bool Plateau::tireIA(Plateau *def) {
       tour++;
     }
   }
-  /*if (toucher == 1) {
-    tracking(def);
-    return false;
-  }*/
+  if (toucher == 1) {
+    int i = tracking(def);
+    if (i == 0) {
+    }
+    if (i == 1)
+      return true;
+    if (i == 2) {
+      return false;
+    }
+  }
   uniform_int_distribution<> dis1(0, tour);
   int coordonne = dis1(gen);
 
@@ -681,14 +695,128 @@ bool Plateau::tireIA(Plateau *def) {
   return true;
 }
 
-
-/*int Plateau::tracking(Plateau *def) {
+int Plateau::tracking(Plateau *def) {
+  random_device rd;
+  mt19937 gen(rd());
   vector<int> valid = {};
-  if (toucher / 10 == (toucher + 1) / 10 || toucher + 1 > 100) {
-    valid.push_back(toucher + 1);
+  if (derniertire / 10 == (derniertire + 1) / 10 || derniertire + 1 > 100) {
+    valid.push_back(derniertire + 1);
+    
   }
-  if (toucher / 10 == (toucher - 1) / 10 || toucher - 1 < 0))
-    valid.push_back(toucher - 1);
-  cout << valid[0] << endl;
-  return 2;
-}*/
+  if (derniertire / 10 == (derniertire - 1) / 10 || derniertire - 1 > 0) {
+    valid.push_back(derniertire - 1);
+   
+  }
+  if (derniertire - 10 > 0) {
+    valid.push_back(derniertire - 10);
+    
+  }
+  if (derniertire + 10 < 100) {
+    valid.push_back(derniertire + 10);
+  }
+  if (valid.size() == 0) {
+    return 0;
+  } else {
+    while (true) {
+      uniform_int_distribution<> dis1(0, valid.size() - 1);
+      cout << valid.size() << endl;
+      int choixc = dis1(gen);
+      cout << choixc << endl;
+      this_thread::sleep_for(chrono::milliseconds(100));
+      if (def->verifcase(valid[choixc], 1)) {
+        bool etat = def->bateautouche(choixc);
+        def->modifCase(valid[choixc], 5);
+        modifCase(valid[choixc], 3);
+        Ia_tire[0][valid[choixc]] = 1;
+        if (etat) {
+          cout << "Touché Coulé ! \n" << endl;
+          def->modifFlotteVie();
+          toucher = 0;
+          derniertire = 0;
+          cout << "traking désactivé \n" << endl;
+        } else {
+          cout << "Touché ! \n" << endl;
+          toucher = 1;
+          derniertire = valid[choixc];
+          cout << "traking activé \n " << endl;
+        }
+        if (def->flottevivante() == false) {
+          return 2;
+        } else {
+          return 1;
+        }
+        break;
+      } else if (verifcase(valid[choixc], 0)) {
+        modifCase(valid[choixc], 2);
+        cout << "Manquer \n" << endl;
+        toucher = 0;
+        cout << "traking désactivé \n" << endl;
+        return 1;
+      }
+    }
+  }
+}
+
+int Plateau::trackingComplexe(Plateau *def){
+  random_device rd;
+    mt19937 gen(rd());
+    vector<int> valid = {};
+    if (derniertire / 10 == (derniertire + 1) / 10 || derniertire + 1 > 100) {
+      valid.push_back(derniertire + 1);
+    }
+    if (derniertire / 10 == (derniertire - 1) / 10 || derniertire - 1 > 0) {
+      cout << (derniertire / 10) <<endl;
+      cout << (derniertire -1) / 10 <<endl;
+      valid.push_back(derniertire - 1);
+    }
+    if (derniertire - 10 > 0) {
+      valid.push_back(derniertire - 10);
+    }
+    if (derniertire + 10 < 100) {
+      valid.push_back(derniertire + 10);
+    }
+    if (valid.size() == 0) {
+      return 0;
+    } else {
+      while (true) {
+        uniform_int_distribution<> dis1(0, valid.size() - 1);
+        int choixc = dis1(gen);
+        this_thread::sleep_for(chrono::milliseconds(100));
+        if (def->verifcase(valid[choixc], 1)) {
+          bool etat = def->bateautouche(choixc);
+          def->modifCase(valid[choixc], 5);
+          modifCase(valid[choixc], 3);
+          Ia_tire[0][valid[choixc]] = 1;
+          if (etat) {
+            cout << "Touché Coulé ! \n" << endl;
+            def->modifFlotteVie();
+            toucher = 1;
+            derniertire = 0;
+            cout << "traking désactivé \n" << endl;
+          } else {
+            cout << "Touché ! \n" << endl;
+            toucher = 1;
+            derniertire = valid[choixc];
+            cout << "traking activé \n " << endl;
+          }
+          if (def->flottevivante() == false) {
+            return 2;
+          } else {
+            return 1;
+          }
+          break;
+        } else if (verifcase(valid[choixc], 0)) {
+          modifCase(valid[choixc], 2);
+          cout << "Manquer \n" << endl;
+          if(toucher==1){
+            cout << "traking toujours actif \n" << endl;
+            return 1;
+          }else{
+          toucher =0;
+          cout << "traking fini \n" << endl;
+          return 1;}
+        }
+      }
+    }
+  
+}

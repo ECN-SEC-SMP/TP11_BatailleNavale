@@ -22,11 +22,9 @@ private:
   int tableau[1][100] = {};
 
   int Ia_tire[1][100] = {};
-
-  string joueur;
   int flottevie = 5;          /** nombre de bateaux restants*/
   int toucher = 0;            /** si le dernier tir touche*/
-  int derniertire = 0;        /** dernier tir*/
+  int derniertire = 10;        /** dernier tir*/
   Bateau *porte_avion;        /**pointeur du bateau porte avion*/
   Bateau *croiseur;           /**pointeur du bateau croisseur*/
   Bateau *contre_torpilleur1; /**pointeur du bateau contre torpilleur 1*/
@@ -99,4 +97,5 @@ public:
   void placementIA(int i);   /** placeement des 5 bateaux*/
   bool tireIA(Plateau *def); /** tire sur le plateau de l'IA */
   int tracking(Plateau *def);/**  */
+  int trackingComplexe(Plateau *def);
 };

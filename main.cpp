@@ -69,10 +69,10 @@ bool tirer(Plateau *att,
     att->modifCase(coordbateau, 3);
     def->modifCase(coordbateau, 5);
     if (etat) { /** Si le bateau est coulé, affiche un message de victoire */
-      
+      cout << "Touché coulé !" << endl;
       def->modifFlotteVie(); /** Modifie la vie de la flotte adverse */
     } else { /** Si le bateau n'est pas coulé, affiche un message de raté */
-      
+      cout << "Touché !" << endl;
     }
   } else if (att->verifcase(coordbateau,
                             0)) { /** Vérifie si la case choisie est vide */
@@ -112,53 +112,116 @@ int main() { /** Création des joueurs et leur plateau de défense et d'attaque 
 
   /** déroulé de jeu pour un seul joueur avec une IA */
   if (input1 == "1") {
+    string input2 = "3";
     cout << "Vous avez choisi le mode solo" << endl;
     /** initialisation du plateau de jeu du joueur et de l'IA*/
-    plateauDefj1->init(1);
-    cout << "tableau joueur def" << endl;
-    plateauDefj1->afficherPlateau();
-    plateauDefIA->init(2);
-    plateauAttaIA->init(0);
-    plateauAttaj1->init(0);
-
-    /** le jeu commence entre l'IA et le joueur à tour de role */
-    while (true) {
-      std::this_thread::sleep_for(std::chrono::milliseconds(
-          1500)); /** attendre 1,5 seconde avant de tirer */
-      cout << "tableau joueur attaque" << endl;
-      plateauAttaj1
-          ->afficherPlateau(); /** affiche le tableau de jeu du joueur */
-      cout << "A toi de tirer \n " << endl;
-      partieencour = tirer(
-          plateauAttaj1, plateauDefIA); /** appelle la fonction tirer pour jouer
-                                           une partie entre le joueur et l'IA */
-      std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-      cout << "tableau joueur attaque" << endl;
-      plateauAttaj1->afficherPlateau();
-      std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-      if (partieencour ==
-          false) { /** si la partie est finie, affiche un message de victoire */
-        cout << "tu as gagne \n " << endl;
+    while (input2 != "1" && input2 != "2") {
+      cout << "choisir la diffilculté la difilculté entre" << endl;
+      cout << "1:tracking simmple" << endl;
+      cout << "2:tracking expert" << endl;
+      string input2 = "3";
+      cin >> input2;
+      if (input2 == "1" || input2 == "2") {
         break;
       }
-      cout << "l IA tire \n  " << endl;
-      partieencour = plateauAttaIA->tireIA(
-          plateauDefj1); /** appelle la fonction tirer pour jouer une partie
-                            entre l'IA et le            joueur */
-      std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-      cout << "tableau IA attaque" << endl;
-      plateauAttaIA->afficherPlateau();
-      std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+      cout << "vous avez pas renseigné 1 ou 2" << endl;
+    }
+    if (input2 == "1") {
+
+      plateauDefj1->init(1);
       cout << "tableau joueur def" << endl;
       plateauDefj1->afficherPlateau();
-      std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-      if (partieencour == false) {
-        cout << "IA a gagner \n " << endl;
-        break;
-      }
-    }
-  }
+      plateauDefIA->init(2);
+      plateauAttaIA->init(0);
+      plateauAttaj1->init(0);
 
+      /** le jeu commence entre l'IA et le joueur à tour de role */
+      while (true) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(
+            1500)); /** attendre 1,5 seconde avant de tirer */
+        cout << "tableau joueur attaque" << endl;
+        plateauAttaj1
+            ->afficherPlateau(); /** affiche le tableau de jeu du joueur */
+        cout << "A toi de tirer \n " << endl;
+        partieencour =
+            tirer(plateauAttaj1,
+                  plateauDefIA); /** appelle la fonction tirer pour jouer
+                                    une partie entre le joueur et l'IA */
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        cout << "tableau joueur attaque" << endl;
+        plateauAttaj1->afficherPlateau();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        if (partieencour == false) { /** si la partie est finie, affiche un
+                                        message de victoire */
+          cout << "tu as gagne \n " << endl;
+          break;
+        }
+        cout << "l IA tire \n  " << endl;
+        partieencour = plateauAttaIA->tireIA(
+            plateauDefj1); /** appelle la fonction tirer pour jouer une partie
+                              entre l'IA et le            joueur */
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        cout << "tableau IA attaque" << endl;
+        plateauAttaIA->afficherPlateau();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        cout << "tableau joueur def" << endl;
+        plateauDefj1->afficherPlateau();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        if (partieencour == false) {
+          cout << "IA a gagner \n " << endl;
+          break;
+        }
+      }
+    
+    } else {
+      plateauDefj1->init(1);
+      cout << "tableau joueur def" << endl;
+      plateauDefj1->afficherPlateau();
+      plateauDefIA->init(2);
+      plateauAttaIA->init(0);
+      plateauAttaj1->init(0);
+
+      /** le jeu commence entre l'IA et le joueur à tour de role */
+      while (true) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(
+            1500)); /** attendre 1,5 seconde avant de tirer */
+        cout << "tableau joueur attaque" << endl;
+        plateauAttaj1
+            ->afficherPlateau(); /** affiche le tableau de jeu du joueur */
+        cout << "A toi de tirer \n " << endl;
+        partieencour =
+            tirer(plateauAttaj1,
+                  plateauDefIA); /** appelle la fonction tirer pour jouer
+                                    une partie entre le joueur et l'IA */
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        cout << "tableau joueur attaque" << endl;
+        plateauAttaj1->afficherPlateau();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        if (partieencour == false) { /** si la partie est finie, affiche un
+                                        message de victoire */
+          cout << "tu as gagne \n " << endl;
+          break;
+        }
+        cout << "l IA tire \n  " << endl;
+        partieencour = plateauAttaIA->trackingComplexe(
+            plateauDefj1); /** appelle la fonction tirer pour jouer une partie
+                              entre l'IA et le            joueur */
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        cout << "tableau IA attaque" << endl;
+        plateauAttaIA->afficherPlateau();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        cout << "tableau joueur def" << endl;
+        plateauDefj1->afficherPlateau();
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        if (partieencour == false) {
+          cout << "IA a gagner \n " << endl;
+          break;
+        }
+      }
+      
+    }
+  
+  }
   /**déroulé de jeu entre 2 joueurs  */
   else {
     cout << "Le joueur 1 doit placer ses bateaux\n " << endl;
